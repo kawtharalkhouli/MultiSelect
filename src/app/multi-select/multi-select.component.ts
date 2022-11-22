@@ -15,7 +15,8 @@ interface City{
 export class MultiSelectComponent implements OnInit {
   @Input() data:City[] =[];
   @Input() configurations={};
-  @ViewChild('selectMenu') selectMenu: ElementRef;
+  @ViewChild('selectMenu', { static: false }) selectMenu: ElementRef;
+
   isClicked=false;
   isMasterSel=false;
   checkedCitiesList:any; 
@@ -25,15 +26,16 @@ export class MultiSelectComponent implements OnInit {
   filteredCity:any;
   myForm: FormGroup;
   cityValue:FormGroup;
+
   
-
-
+  
   constructor(private formBuilder: FormBuilder,private renderer: Renderer2) {}
   
   // Getter method to access formcontrols
   get cityName() {
     return this.cityValue.get('cityName');
   }
+  
 
   ngOnInit(): void {
     console.log(this.data)
@@ -44,8 +46,11 @@ export class MultiSelectComponent implements OnInit {
     cityName:['']
    });
    console.log(this.configurations);
+  
+  }
+  ngAfterViewInit(){
+    this.renderer.setAttribute(this.selectMenu.nativeElement, 'background', '#333' );
 
-   
   }
 
 
