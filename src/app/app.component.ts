@@ -12,6 +12,7 @@ interface ToggleMenu{
   isClicked: boolean;
 }
 interface AllSelected{
+  
   isMasterSelected:boolean
 }
 interface CheckedItems{
