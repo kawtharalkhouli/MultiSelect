@@ -1,1 +1,5 @@
-<app-multi-select [data]="cities" [configurations]="config"></app-multi-select>
+<app-multi-select  (onCheckAllClick)="onCheckAllClick($event)" 
+(onToggleMenu)="onToggleMenu($event)"
+(onAllSelected)="onAllSelected($event)"
+(onItemsChecked)="onItemsChecked($event)"
+[data]="cities" [configurations]="config" [customStyle]="customStyle"></app-multi-select>

@@ -4,7 +4,10 @@ export class City {
   name: string;
   isSelected: boolean;
 }
-
+interface configurations{
+  isContainImages: boolean;
+  chosenField: string;
+}
 interface CheckAllCheckbox{
   isSelected:boolean;
 }
@@ -48,13 +51,72 @@ export class AppComponent implements OnInit {
     {id:5,name:'Paris',isSelected:false}
   ];
 
-  config={
-    "isContainImages": "true or false", // images must be named images (to avoid conflicts),
-    "chosenFelid" : "string",
+  config: configurations={
+    isContainImages: false, // images must be named images (to avoid conflicts),
+    chosenField : "name"
+    }  
+
+  customStyle=[
+    {
+      multiSelectBody: {
+        "background":"#fff"
+      }
+    },
+    {
+      multiSelectMenu: {
+        "width":"24em"
+      }
+    },
+    {
+      multiSelectBtn: {
+        "height":"1.25em"
+      }
+    },
+    {
+      multiSelectArrow: {
+        "border-top":"6px solid #333"
+      }
+    },
+    {
+      multiSelectOptions: {
+        "transition":"0.2s"
+      }
+    },
+    {
+      multiSelectSearchOptions: {
+        "padding":"1.2em 1.2em"
+      }
+    },
+    {
+      multiSelectAllCheckbox: {
+        "margin-right":"1.4em"
+      }
+    },
+    {
+      multiSelectSearchBox: {
+        "margin-right":"1.4em"
+      }
+    },
+    {
+      multiSelectCloseBtn: {
+        "font-size":"1.3em"
+      }
+    },
+    {
+      multiSelectOption: {
+        "height":"4em"
+      }
+    },
+    {
+      multiSelectOptionText: {
+        "color":"#222"
+      }
+    },
+    {
+      multiSelectSingleCheckbox: {
+        "margin-right":"1.2em"
+      }
     }
-
-  ngOnInit(): void {
-    console.log(this.cities)
-
-  }
+  ];
+  ngOnInit(): void {}
 }
