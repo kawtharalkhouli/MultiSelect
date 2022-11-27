@@ -55,51 +55,64 @@ export class AppComponent implements OnInit {
     isContainImages: false, // images must be named images (to avoid conflicts),
     chosenField : "name"
     }  
+    selectStyle= [
+      {
+        
+          "background":"#333",
+          "color":"#fff"
+      
+      }
+    ]
 
   customStyle=[
     {
+      multiSelectForm:{
+        " background " : "#fff"
+      }
+    },
+    {
       multiSelectBody: {
-        "background":"#fff"
+        " background ":"#111"
       }
     },
     {
       multiSelectMenu: {
-        "width":"24em"
+        " width ":"24em"
       }
     },
     {
       multiSelectBtn: {
-        "height":"1.25em"
+        " height ":"1.25em"
       }
     },
     {
       multiSelectArrow: {
-        "border-top":"6px solid #333"
+        " border-top ":"6px solid #333"
       }
     },
     {
       multiSelectOptions: {
-        "transition":"0.2s"
+        " transition ":"0.2s"
       }
     },
     {
       multiSelectSearchOptions: {
-        "padding":"1.2em 1.2em"
+        " padding ":"1.2em 1.2em"
       }
     },
     {
       multiSelectAllCheckbox: {
-        "margin-right":"1.4em"
+        " margin-right ":"1.4em"
       }
     },
     {
       multiSelectSearchBox: {
-        "margin-right":"1.4em"
+        " margin-right ":"1.4em"
       }
     },
     {
       multiSelectCloseBtn: {
-        "font-size":"1.3em"
+        " font-size ":"1.3em"
       }
     },
     {

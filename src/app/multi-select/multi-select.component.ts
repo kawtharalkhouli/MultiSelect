@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, Renderer2, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output,  Renderer2, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 interface City{
@@ -24,22 +24,22 @@ interface CheckedItems{
 @Component({
   selector: 'app-multi-select',
   template: ` 
-  <form [formGroup]="cityValue" #formDiv>
-  <div class="body" #body >
-      <div class="select-menu" #selectMenu >
-          <div class="select-btn" #select  (click)="toggleMenu()" [ngClass]="{'select-clicked':isClicked === true}">
+  <form [formGroup]="cityValue" #multiSelectForm>
+  <div class="body" #multiSelectBody >
+      <div class="select-menu" #multiSelectMenu >
+          <div class="select-btn" #multiSelectBtn  (click)="toggleMenu()" [ngClass]="{'select-clicked':isClicked === true}">
               <span class="select-btn-text" #selectText [innerText]="selectedCity"></span>
-              <div class="arrow" #arrow  [ngClass]="{'arrow-rotate':isClicked === true}"></div>
+              <div class="arrow" #multiSelectArrow  [ngClass]="{'arrow-rotate':isClicked === true}"></div>
           </div>
-          <ul class="options"  #options [ngClass]="{'menu-open':isClicked === true, 'menu-closed':isClicked === false}" >
-              <div class="search-options" #searchOptions>
-                  <input type="checkbox" class="checkbox" #checkAll [(ngModel)]="isMasterSel" [ngModelOptions]="{standalone: true}" (change)="checkUncheckAll()">
+          <ul class="options"  #multiSelectOptions [ngClass]="{'menu-open':isClicked === true, 'menu-closed':isClicked === false}" >
+              <div class="search-options" #multiSelectSearchOptions>
+                  <input type="checkbox" class="checkbox" #multiSelectAllCheckbox [(ngModel)]="isMasterSel" [ngModelOptions]="{standalone: true}" (change)="checkUncheckAll()">
                   <input type="text" class="search-box"  #searchText   [(ngModel)]="filteredData" [ngModelOptions]="{standalone: true}" (keyup) ="filterCities()">
-                  <span><i #close class="fa fa-times"  (click)="toggleMenu()" [ngClass]="{'menu-open':isClicked === true}" ></i></span>
+                  <span><i #multiSelectCloseBtn class="fa fa-times"  (click)="toggleMenu()" [ngClass]="{'menu-open':isClicked === true}" ></i></span>
               </div>
-               <li class="option" #option  *ngFor="let city of filterdData" [value]="city" formControlName="cityName" ngDefaultControl>
+               <li class="option" #multiSelectOption  *ngFor="let city of filterdData" [value]="city" formControlName="cityName" ngDefaultControl>
               <label class="optionText" #optionText>
-                  <input type="checkbox" class="checkbox" #selctCheckbox (change)="isAllSelected()" [(ngModel)]="city.isSelected" [ngModelOptions]="{standalone: true}">
+                  <input type="checkbox" class="checkbox" #multiSelectSingleCheckbox (change)="isAllSelected()" [(ngModel)]="city.isSelected" [ngModelOptions]="{standalone: true}">
                   <img src="" #images *ngIf="configurations.isContainImages">
                   {{city.name}}
               </label>
@@ -51,42 +51,31 @@ interface CheckedItems{
   styleUrls: ['./multi-select.component.scss']
 })
 export class MultiSelectComponent implements OnInit , AfterViewInit{
-  selectStyle=[{
-    "background":"#333",
-    "color":"#fff"
-  }];
-
+  
+  //Inputs
   @Input() customStyle: any[]=[];
-
-  customStyle22 = [
-    {
-      selectStle: [{
-        "background":"#333",
-        "color":"#fff"
-      }]
-    }
-  ]
   @Input() data:any =[];
   @Input() configurations:any;
-  //@Input() customStyle:any;
-  @ViewChild('formDiv') formDiv: ElementRef;
-  @ViewChild('body') body: ElementRef;
-  @ViewChild('selectMenu') selectMenu: ElementRef;
-  @ViewChild('select') select: ElementRef;
-  @ViewChild('selectText') selectText: ElementRef;
-  @ViewChild('arrow') arrow: ElementRef;
-  @ViewChild('options') options: ElementRef;
-  @ViewChild('checkAll') checkAll: ElementRef;
-  @ViewChild('searchText') searchText: ElementRef;
-  @ViewChild('close') close: ElementRef;
-  //@ViewChild('option') option: ElementRef;
-  @ViewChild('optionText') optionText: ElementRef;
-  @ViewChild('selectCheckbox') selectCheckbox: ElementRef;
-  @ViewChild('images') images: ElementRef;
-  @ViewChild('searchOptions') searchOptions: ElementRef;
-  @ViewChildren(ElementRef) elements: QueryList<any>;
-  @ViewChildren('option') optionElements: QueryList<ElementRef>;
+  @Input() style:any; 
 
+  //reference for html elements
+  @ViewChild('multiSelectForm') multiSelectForm: ElementRef;
+  @ViewChild('multiSelectBody') multiSelectBody: ElementRef;
+  @ViewChild('multiSelectMenu') multiSelectMenu: ElementRef;
+  @ViewChild('multiSelectBtn') multiSelectBtn: ElementRef;
+  @ViewChild('multiSelectArrow') multiSelectArrow: ElementRef;
+  @ViewChild('multiSelectOptions') multiSelectOptions: ElementRef;
+  @ViewChild('multiSelectAllCheckbox')  multiSelectAllCheckbox: ElementRef;
+  @ViewChild('searchText') multiSelectSearchBox: ElementRef;
+  @ViewChild('multiSelectCloseBtn') multiSelectCloseBtn: ElementRef;
+  @ViewChild('multiSelectOption') multiSelectOption: ElementRef;
+  @ViewChild('optionText') multiSelectOptionText: ElementRef;
+  @ViewChild('multiSelectSingleCheckbox') multiSelectSingleCheckbox: ElementRef;
+  @ViewChild('images') images: ElementRef;
+  @ViewChild('multiSelectSearchOptions') multiSelectSearchOptions: ElementRef;
+
+
+  //Outputs
   @Output() onCheckAllClick: EventEmitter<CheckAllCheckbox> =new EventEmitter();
   @Output() onToggleMenu: EventEmitter<ToggleMenu> =new EventEmitter();
   @Output() onAllSelected: EventEmitter<AllSelected>=new EventEmitter();
@@ -100,6 +89,8 @@ export class MultiSelectComponent implements OnInit , AfterViewInit{
   filteredData:any;
   myForm: FormGroup;
   cityValue:FormGroup;
+
+  
 
   constructor(private formBuilder: FormBuilder,private renderer: Renderer2) {}
   
@@ -115,18 +106,79 @@ export class MultiSelectComponent implements OnInit , AfterViewInit{
   }
  
   ngAfterViewInit(){
+    const elementRefs = [
+      {
+        multiSelectForm: this.multiSelectForm,
+  
+      },
+      {
+        multiSelectBody: this.multiSelectBody,
+  
+      },
+      {
+        multiSelectMenu: this.multiSelectMenu,
+  
+      },
+      {
+        multiSelectBtn: this.multiSelectBtn,
+  
+      },
+      {
+        multiSelectArrow: this.multiSelectArrow,
+  
+      },
+      {
+        multiSelectOptions: this.multiSelectOptions,
+  
+      },
+      {
+        multiSelectSearchOptions: this.multiSelectSearchOptions,
+  
+      },
+      {
+        multiSelectAllCheckbox: this.multiSelectAllCheckbox,
+  
+      },
+      {
+        multiSelectSearchBox: this.multiSelectSearchBox,
+  
+      },
+      {
+        multiSelectCloseBtn: this.multiSelectCloseBtn,
+  
+      },
+      {
+        multiSelectOption: this.multiSelectOption,
+  
+      },
+      {
+        multiSelectOptionText: this.multiSelectOptionText,
+  
+      },
+      {
+        multiSelectSingleCheckbox: this.multiSelectSingleCheckbox,
+  
+      }
+    ]
 
-    for (const style of this.customStyle) {
-      console.log(style);
-      
+    //renderer2 for custom style
+ 
+    for(let i=0;i<this.customStyle.length;i++){
+      for(let key in this.customStyle[i]){
+        let attribute= Object.keys(this.customStyle[i][key]);
+        let attributeValue= Object.values(this.customStyle[i][key]);
+        console.log(attribute[0]);
+        console.log(attributeValue[0]);
+        this.renderer.setStyle(elementRefs[i],attribute[0] , attributeValue[0],1);
+      } 
     }
-      
-    this.selectStyle.forEach((style)=>{
+    //renderer 2 for styling one element only 
+    this.style.forEach((style)=>{
       for(let key in style){
-        this.renderer.setStyle(this.select.nativeElement, key , style[key],1);
+        this.renderer.setStyle(this.multiSelectBtn.nativeElement, key , style[key],1);
+       console.log(key, style[key])
       }
     })
-
   }
  
   
