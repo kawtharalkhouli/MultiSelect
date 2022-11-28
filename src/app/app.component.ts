@@ -56,11 +56,8 @@ export class AppComponent implements OnInit {
     chosenField : "name"
     }  
     selectStyle= [
-      {
-        
-          "background":"#333",
-          "color":"#fff"
-      
+      {  
+        "background":"#fff" 
       }
     ]
 

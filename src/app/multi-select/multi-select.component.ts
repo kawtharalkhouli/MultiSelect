@@ -34,11 +34,11 @@ interface CheckedItems{
           <ul class="options"  #multiSelectOptions [ngClass]="{'menu-open':isClicked === true, 'menu-closed':isClicked === false}" >
               <div class="search-options" #multiSelectSearchOptions>
                   <input type="checkbox" class="checkbox" #multiSelectAllCheckbox [(ngModel)]="isMasterSel" [ngModelOptions]="{standalone: true}" (change)="checkUncheckAll()">
-                  <input type="text" class="search-box"  #searchText   [(ngModel)]="filteredData" [ngModelOptions]="{standalone: true}" (keyup) ="filterCities()">
+                  <input type="text" class="search-box"  #multiSelectSearchBox   [(ngModel)]="filteredData" [ngModelOptions]="{standalone: true}" (keyup) ="filterCities()">
                   <span><i #multiSelectCloseBtn class="fa fa-times"  (click)="toggleMenu()" [ngClass]="{'menu-open':isClicked === true}" ></i></span>
               </div>
                <li class="option" #multiSelectOption  *ngFor="let city of filterdData" [value]="city" formControlName="cityName" ngDefaultControl>
-              <label class="optionText" #optionText>
+              <label class="optionText" #multiSelectOptionText>
                   <input type="checkbox" class="checkbox" #multiSelectSingleCheckbox (change)="isAllSelected()" [(ngModel)]="city.isSelected" [ngModelOptions]="{standalone: true}">
                   <img src="" #images *ngIf="configurations.isContainImages">
                   {{city.name}}
@@ -66,10 +66,10 @@ export class MultiSelectComponent implements OnInit , AfterViewInit{
   @ViewChild('multiSelectArrow') multiSelectArrow: ElementRef;
   @ViewChild('multiSelectOptions') multiSelectOptions: ElementRef;
   @ViewChild('multiSelectAllCheckbox')  multiSelectAllCheckbox: ElementRef;
-  @ViewChild('searchText') multiSelectSearchBox: ElementRef;
+  @ViewChild('multiSelectSearchBox') multiSelectSearchBox: ElementRef;
   @ViewChild('multiSelectCloseBtn') multiSelectCloseBtn: ElementRef;
   @ViewChild('multiSelectOption') multiSelectOption: ElementRef;
-  @ViewChild('optionText') multiSelectOptionText: ElementRef;
+  @ViewChild('multiSelectOptionText') multiSelectOptionText: ElementRef;
   @ViewChild('multiSelectSingleCheckbox') multiSelectSingleCheckbox: ElementRef;
   @ViewChild('images') images: ElementRef;
   @ViewChild('multiSelectSearchOptions') multiSelectSearchOptions: ElementRef;
@@ -163,15 +163,15 @@ export class MultiSelectComponent implements OnInit , AfterViewInit{
 
     //renderer2 for custom style
  
-    for(let i=0;i<this.customStyle.length;i++){
+/*     for(let i=0;i<this.customStyle.length;i++){
       for(let key in this.customStyle[i]){
         let attribute= Object.keys(this.customStyle[i][key]);
         let attributeValue= Object.values(this.customStyle[i][key]);
         console.log(attribute[0]);
         console.log(attributeValue[0]);
-        this.renderer.setStyle(elementRefs[i],attribute[0] , attributeValue[0],1);
+        //this.renderer.setStyle(elementRefs[i],attribute[0] , attributeValue[0],1);
       } 
-    }
+    } */
     //renderer 2 for styling one element only 
     this.style.forEach((style)=>{
       for(let key in style){
